@@ -1,0 +1,8 @@
+flask
+flask-sqlalchemy
+pyodbc
+pandas
+requests
+apscheduler
+flask-bcrypt
+flask-login

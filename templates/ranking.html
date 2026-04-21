@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabla de Posiciones - Mundial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card { border-radius: 15px; overflow: hidden; }
+        .table thead { background-color: #0d6efd; color: white; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4">🥇 Tabla de Posiciones</h1>
+            <p class="text-muted">¡La competencia por el primer lugar está encendida!</p>
+            <a href="/partidos" class="btn btn-outline-primary">← Volver a mis pronósticos</a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Participante</th>
+                                    <th class="text-center">Puntos Totales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in ranking %}
+                                <tr class="{% if loop.index == 1 %}table-warning{% endif %}">
+                                    <td class="text-center fw-bold">
+                                        {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% else %}{{ loop.index }}{% endif %}
+                                    </td>
+                                    <td class="fw-semibold">{{ user.nombre }}</td>
+                                    <td class="text-center">
+                                        <span class="badge rounded-pill bg-primary px-3 fs-6">{{ user.puntos_total }}</span>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-4 text-muted">Aún no hay puntos calculados.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

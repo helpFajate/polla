@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Partidos de Hoy y Manana</h2>
+    <span class="badge bg-success fs-6">{{ partidos|length }} partidos disponibles</span>
+</div>
+
+{% if partidos %}
+<div class="card shadow">
+    <table class="table align-middle mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>Dia</th>
+                <th>Hora</th>
+                <th>Liga</th>
+                <th class="text-end">Local</th>
+                <th class="text-center">Marcador</th>
+                <th>Visitante</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in partidos %}
+            <tr>
+                <td>
+                    {# p[6] es la etiqueta 'HOY' o 'MANANA' calculada en la consulta SQL
+                       mediante DATEADD(HOUR, -5, ...) para ajuste a hora colombiana. #}
+                    {% if p[6] == 'HOY' %}
+                        <span class="badge bg-danger">HOY</span>
+                    {% else %}
+                        <span class="badge bg-secondary">MANANA</span>
+                    {% endif %}
+                </td>
+                <td>{{ p[3].strftime('%H:%M') }}</td>
+                <td><small class="text-muted">{{ p[4] }}</small></td>
+                <td class="text-end fw-bold">{{ p[1] }}</td>
+
+                {# El formulario esta dentro del tr para que el boton Guardar
+                   quede alineado en la misma fila que los inputs del marcador. #}
+                <form action="{{ url_for('pronosticos.guardar_pronostico') }}" method="POST" class="d-contents">
+                    <input type="hidden" name="partido_id" value="{{ p[0] }}">
+                    <td class="text-center">
+                        <input type="number" name="goles_local"
+                            class="form-control d-inline text-center"
+                            style="width:55px" min="0" max="20" required>
+                        <span class="mx-1 fw-bold">-</span>
+                        <input type="number" name="goles_visitante"
+                            class="form-control d-inline text-center"
+                            style="width:55px" min="0" max="20" required>
+                    </td>
+                    <td class="fw-bold">{{ p[2] }}</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="alert alert-info text-center">
+    <h5>No hay partidos disponibles para hoy ni manana.</h5>
+    <p class="mb-0">El sistema se actualiza automaticamente cada 5 minutos.</p>
+</div>
+{% endif %}
+
+{% endblock %}

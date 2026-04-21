@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Historial - Mundial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2>📜 Mi Historial de Puntos</h2>
+        <table class="table table-striped mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>Partido</th>
+                    <th>Tu Apuesta</th>
+                    <th>Resultado Real</th>
+                    <th>Puntos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in historial %}
+                <tr>
+                    <td>{{ h.equipo_local }} vs {{ h.equipo_visitante }}</td>
+                    <td>{{ h.pronostico_local }} - {{ h.pronostico_visitante }}</td>
+                    <td>{{ h.goles_local if h.goles_local != None else '-' }} - {{ h.goles_visitante if h.goles_visitante != None else '-' }}</td>
+                    <td class="fw-bold text-success">{{ h.puntos_obtenidos if h.puntos_obtenidos != None else 0 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/partidos" class="btn btn-primary">Volver a apostar</a>
+    </div>
+</body>
+</html>

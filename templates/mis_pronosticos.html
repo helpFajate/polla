@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Mis Apuestas</h2>
+
+    <div class="card shadow border-0">
+        {% if apuestas %}
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Partido</th>
+                        <th class="text-center">Mi Marcador</th>
+                        <th class="text-center">Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ap in apuestas %}
+                    <tr>
+                        <td>
+                            <strong>{{ ap[0] }} vs {{ ap[1] }}</strong>
+                            <br><small class="text-muted">{{ ap[5].strftime('%d/%b %H:%M') }}</small>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-secondary fs-6">{{ ap[2] }} - {{ ap[3] }}</span>
+                        </td>
+                        <td class="text-center">
+                            {# ap[4] contiene puntos_ganados. None indica que el partido
+                               aun no ha sido procesado por el scheduler. #}
+                            {% if ap[4] is not none %}
+                                {% if ap[4] > 0 %}
+                                    <span class="badge bg-success px-3 fs-6">+{{ ap[4] }} pts</span>
+                                {% else %}
+                                    <span class="badge bg-danger px-3 fs-6">0 pts</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge bg-warning text-dark px-3">Pendiente</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="card-body text-center py-5">
+            <p>Aun no has realizado apuestas.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
